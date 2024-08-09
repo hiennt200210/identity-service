@@ -1,7 +1,7 @@
 package com.hiennt200210.identityservice.controller;
 
-import com.hiennt200210.identityservice.dto.UserCreateDto;
-import com.hiennt200210.identityservice.dto.UserUpdateDto;
+import com.hiennt200210.identityservice.dto.request.UserCreateDto;
+import com.hiennt200210.identityservice.dto.request.UserUpdateDto;
 import com.hiennt200210.identityservice.entity.User;
 import com.hiennt200210.identityservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

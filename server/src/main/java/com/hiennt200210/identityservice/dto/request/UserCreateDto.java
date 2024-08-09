@@ -1,4 +1,4 @@
-package com.hiennt200210.identityservice.dto;
+package com.hiennt200210.identityservice.dto.request;
 
 import com.hiennt200210.identityservice.constant.Gender;
 

@@ -1,8 +1,10 @@
 package com.hiennt200210.identityservice.service;
 
-import com.hiennt200210.identityservice.dto.UserCreateDto;
-import com.hiennt200210.identityservice.dto.UserUpdateDto;
+import com.hiennt200210.identityservice.dto.request.UserCreateDto;
+import com.hiennt200210.identityservice.dto.request.UserUpdateDto;
 import com.hiennt200210.identityservice.entity.User;
+import com.hiennt200210.identityservice.exception.BadRequestException;
+import com.hiennt200210.identityservice.exception.NotFoundException;
 import com.hiennt200210.identityservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,14 @@ public class UserService {
 
     public User createUser(UserCreateDto userCreateDto) {
 
+        if (userRepository.existsByUsername(userCreateDto.getUsername())) {
+            throw new BadRequestException("Username already exists");
+        }
+
+        if (userRepository.existsByEmail(userCreateDto.getEmail())) {
+            throw new BadRequestException("Email already exists");
+        }
+
         User user = new User();
         user.setFirstName(userCreateDto.getFirstName());
         user.setLastName(userCreateDto.getLastName());
@@ -38,12 +48,12 @@ public class UserService {
     }
 
     public User getUserById(String userId) {
-        return userRepository.findById(userId).orElse(null);
+        return userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
     }
 
     public User updateUser(String userId, UserUpdateDto userUpdateDto) {
         if (getUserById(userId) == null) {
-            return null;
+            throw new NotFoundException("User not found");
         }
 
         User user = getUserById(userId);
@@ -59,7 +69,7 @@ public class UserService {
 
     public void deleteUser(String userId) {
         if (getUserById(userId) == null) {
-            return;
+            throw new NotFoundException("User not found");
         }
         userRepository.deleteById(userId);
     }
