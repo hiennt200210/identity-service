@@ -26,6 +26,7 @@ public class UserService {
         user.setLastName(userCreateDto.getLastName());
         user.setGender(userCreateDto.getGender());
         user.setDateOfBirth(userCreateDto.getDateOfBirth());
+        user.setEmail(userCreateDto.getEmail());
         user.setUsername(userCreateDto.getUsername());
         user.setPassword(userCreateDto.getPassword());
 
@@ -50,6 +51,8 @@ public class UserService {
         user.setLastName(userUpdateDto.getLastName());
         user.setGender(userUpdateDto.getGender());
         user.setDateOfBirth(userUpdateDto.getDateOfBirth());
+        user.setEmail(userUpdateDto.getEmail());
+        user.setPassword(userUpdateDto.getPassword());
 
         return userRepository.save(user);
     }

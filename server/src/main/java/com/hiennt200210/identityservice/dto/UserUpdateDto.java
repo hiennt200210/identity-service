@@ -14,6 +14,8 @@ public class UserUpdateDto {
 
     private LocalDate dateOfBirth;
 
+    private String email;
+
     private String password;
 
     public String getFirstName() {
@@ -46,6 +48,14 @@ public class UserUpdateDto {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

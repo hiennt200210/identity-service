@@ -14,6 +14,8 @@ public class UserCreateDto {
 
     private LocalDate dateOfBirth;
 
+    private String email;
+
     private String username;
 
     private String password;
@@ -48,6 +50,14 @@ public class UserCreateDto {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {
