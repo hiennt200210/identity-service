@@ -4,6 +4,7 @@ import com.hiennt200210.identityservice.dto.request.UserCreateDto;
 import com.hiennt200210.identityservice.dto.request.UserUpdateDto;
 import com.hiennt200210.identityservice.entity.User;
 import com.hiennt200210.identityservice.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody UserCreateDto userCreateDto) {
+    public ResponseEntity<User> createUser(@RequestBody @Valid UserCreateDto userCreateDto) {
         User user = userService.createUser(userCreateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable String userId, @RequestBody UserUpdateDto userUpdateDto) {
+    public ResponseEntity<User> updateUser(@PathVariable String userId, @RequestBody @Valid UserUpdateDto userUpdateDto) {
         return ResponseEntity.ok(userService.updateUser(userId, userUpdateDto));
     }
 

@@ -1,21 +1,37 @@
 package com.hiennt200210.identityservice.dto.request;
 
 import com.hiennt200210.identityservice.constant.Gender;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
 public class UserUpdateDto {
 
+    @NotBlank(message = "First name is required")
+    @Size(min = 1, max = 100, message = "First name must be between 1 and 50 characters")
     private String firstName;
 
+    @NotBlank(message = "Last name is required")
+    @Size(min = 1, max = 100, message = "Last name must be between 1 and 50 characters")
     private String lastName;
 
+    @NotNull(message = "Gender is required")
+    @Pattern(regexp = "MALE|FEMALE|OTHER", message = "Gender must be either MALE, FEMALE, or OTHER")
     private Gender gender;
 
+    @NotNull(message = "Date of birth is required")
+    @Past(message = "Date of birth must be a past date")
     private LocalDate dateOfBirth;
 
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email should be valid")
+    @Size(max = 255, message = "Email should not be longer than 255 characters")
     private String email;
 
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, max = 255, message = "Password must be between 8 and 255 characters")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+            message = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")
     private String password;
 
     public String getFirstName() {
