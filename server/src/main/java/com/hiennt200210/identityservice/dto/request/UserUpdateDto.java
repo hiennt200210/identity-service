@@ -1,6 +1,6 @@
 package com.hiennt200210.identityservice.dto.request;
 
-import com.hiennt200210.identityservice.constant.Gender;
+import com.hiennt200210.identityservice.enums.Gender;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;

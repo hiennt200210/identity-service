@@ -1,6 +1,6 @@
 package com.hiennt200210.identityservice.dto.request;
 
-import com.hiennt200210.identityservice.constant.Gender;
+import com.hiennt200210.identityservice.enums.Gender;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
@@ -16,7 +16,6 @@ public class UserCreateDto {
     private String lastName;
 
     @NotNull(message = "Gender is required")
-    @Pattern(regexp = "MALE|FEMALE|OTHER", message = "Gender must be either MALE, FEMALE, or OTHER")
     private Gender gender;
 
     @NotNull(message = "Date of birth is required")

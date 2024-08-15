@@ -1,4 +1,4 @@
-package com.hiennt200210.identityservice.constant;
+package com.hiennt200210.identityservice.enums;
 
 public enum Gender {
     MALE,

@@ -1,6 +1,6 @@
 package com.hiennt200210.identityservice.entity;
 
-import com.hiennt200210.identityservice.constant.Gender;
+import com.hiennt200210.identityservice.enums.Gender;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
