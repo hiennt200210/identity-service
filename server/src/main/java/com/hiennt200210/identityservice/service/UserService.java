@@ -3,8 +3,8 @@ package com.hiennt200210.identityservice.service;
 import com.hiennt200210.identityservice.dto.request.UserCreateDto;
 import com.hiennt200210.identityservice.dto.request.UserUpdateDto;
 import com.hiennt200210.identityservice.entity.User;
-import com.hiennt200210.identityservice.exception.BadRequestException;
-import com.hiennt200210.identityservice.exception.NotFoundException;
+import com.hiennt200210.identityservice.enums.ErrorCode;
+import com.hiennt200210.identityservice.exception.ApiException;
 import com.hiennt200210.identityservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,14 +23,6 @@ public class UserService {
 
     public User createUser(UserCreateDto userCreateDto) {
 
-        if (userRepository.existsByUsername(userCreateDto.getUsername())) {
-            throw new BadRequestException("Username already exists");
-        }
-
-        if (userRepository.existsByEmail(userCreateDto.getEmail())) {
-            throw new BadRequestException("Email already exists");
-        }
-
         User user = new User();
         user.setFirstName(userCreateDto.getFirstName());
         user.setLastName(userCreateDto.getLastName());
@@ -40,7 +32,18 @@ public class UserService {
         user.setUsername(userCreateDto.getUsername());
         user.setPassword(userCreateDto.getPassword());
 
-        return userRepository.save(user);
+        if (userRepository.existsByUsername(userCreateDto.getUsername())) {
+            throw new ApiException(ErrorCode.USERNAME_ALREADY_EXISTS);
+        }
+
+        if (userRepository.existsByEmail(userCreateDto.getEmail())) {
+//            throw new ApiException(ErrorCode.EMAIL_ALREADY_EXISTS);
+            System.out.println("Email already exists");
+            return user;
+        }
+
+//        return userRepository.save(user);
+        return user;
     }
 
     public List<User> getAllUsers() {
@@ -48,12 +51,12 @@ public class UserService {
     }
 
     public User getUserById(String userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
+        return userRepository.findById(userId).orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
     }
 
     public User updateUser(String userId, UserUpdateDto userUpdateDto) {
         if (getUserById(userId) == null) {
-            throw new NotFoundException("User not found");
+            throw new ApiException(ErrorCode.USER_NOT_FOUND);
         }
 
         User user = getUserById(userId);
@@ -69,7 +72,7 @@ public class UserService {
 
     public void deleteUser(String userId) {
         if (getUserById(userId) == null) {
-            throw new NotFoundException("User not found");
+            throw new ApiException(ErrorCode.USER_NOT_FOUND);
         }
         userRepository.deleteById(userId);
     }

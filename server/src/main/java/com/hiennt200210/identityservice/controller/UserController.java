@@ -2,6 +2,7 @@ package com.hiennt200210.identityservice.controller;
 
 import com.hiennt200210.identityservice.dto.request.UserCreateDto;
 import com.hiennt200210.identityservice.dto.request.UserUpdateDto;
+import com.hiennt200210.identityservice.dto.response.ApiResponse;
 import com.hiennt200210.identityservice.entity.User;
 import com.hiennt200210.identityservice.service.UserService;
 import jakarta.validation.Valid;
@@ -24,29 +25,33 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody @Valid UserCreateDto userCreateDto) {
-        User user = userService.createUser(userCreateDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    public ResponseEntity<ApiResponse<User>> createUser(@RequestBody @Valid UserCreateDto userCreateDto) {
+        ApiResponse<User> response = new ApiResponse<>("success", userService.createUser(userCreateDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<ApiResponse<List<User>>> getAllUsers() {
+        ApiResponse<List<User>> response = new ApiResponse<>("success", userService.getAllUsers());
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable String userId) {
-        return ResponseEntity.ok(userService.getUserById(userId));
+    public ResponseEntity<ApiResponse<User>> getUserById(@PathVariable String userId) {
+        ApiResponse<User> response = new ApiResponse<>("success", userService.getUserById(userId));
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable String userId, @RequestBody @Valid UserUpdateDto userUpdateDto) {
-        return ResponseEntity.ok(userService.updateUser(userId, userUpdateDto));
+    public ResponseEntity<ApiResponse<User>> updateUser(@PathVariable String userId, @RequestBody @Valid UserUpdateDto userUpdateDto) {
+        ApiResponse<User> response = new ApiResponse<>("success", userService.updateUser(userId, userUpdateDto));
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable String userId) {
+        ApiResponse<Void> response = new ApiResponse<>("success", null);
         userService.deleteUser(userId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(response);
     }
 }
