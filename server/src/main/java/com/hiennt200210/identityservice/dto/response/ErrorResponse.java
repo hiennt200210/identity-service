@@ -1,33 +1,61 @@
 package com.hiennt200210.identityservice.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hiennt200210.identityservice.exception.ApiException;
+import org.springframework.validation.FieldError;
 
+import java.time.LocalDateTime;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
-    private final int status;
-    private final String code;
-    private final String title;
-    private final String detail;
+    private String code;
+    private String message;
+    private String details;
+    private LocalDateTime timestamp;
 
     public ErrorResponse(ApiException apiException) {
-        this.status = apiException.getErrorCode().getStatus();
         this.code = apiException.getErrorCode().getCode();
-        this.title = apiException.getErrorCode().getTitle();
-        this.detail = apiException.getErrorCode().getDetail();
+        this.message = apiException.getErrorCode().getTitle();
+        this.details = apiException.getErrorCode().getDetail();
+        this.timestamp = LocalDateTime.now();
     }
 
-    public int getStatus() {
-        return status;
+    public ErrorResponse(FieldError fieldError) {
+        this.code = "BAD_REQUEST";
+        this.message = "Invalid " + fieldError.getField() + " field";
+        this.details = fieldError.getDefaultMessage();
+        this.timestamp = LocalDateTime.now();
     }
 
     public String getCode() {
         return code;
     }
 
-    public String getTitle() {
-        return title;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getDetail() {
-        return detail;
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 }

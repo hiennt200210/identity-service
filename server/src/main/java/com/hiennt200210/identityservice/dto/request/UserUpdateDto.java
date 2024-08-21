@@ -16,17 +16,11 @@ public class UserUpdateDto {
     private String lastName;
 
     @NotNull(message = "Gender is required")
-    @Pattern(regexp = "MALE|FEMALE|OTHER", message = "Gender must be either MALE, FEMALE, or OTHER")
     private Gender gender;
 
     @NotNull(message = "Date of birth is required")
     @Past(message = "Date of birth must be a past date")
     private LocalDate dateOfBirth;
-
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
-    @Size(max = 255, message = "Email should not be longer than 255 characters")
-    private String email;
 
     @NotBlank(message = "Password is required")
     @Size(min = 8, max = 255, message = "Password must be between 8 and 255 characters")
@@ -64,14 +58,6 @@ public class UserUpdateDto {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPassword() {

@@ -26,31 +26,31 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<User>> createUser(@RequestBody @Valid UserCreateDto userCreateDto) {
-        ApiResponse<User> response = new ApiResponse<>("success", userService.createUser(userCreateDto));
+        ApiResponse<User> response = new ApiResponse<>(userService.createUser(userCreateDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<User>>> getAllUsers() {
-        ApiResponse<List<User>> response = new ApiResponse<>("success", userService.getAllUsers());
+        ApiResponse<List<User>> response = new ApiResponse<>(userService.getAllUsers());
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<User>> getUserById(@PathVariable String userId) {
-        ApiResponse<User> response = new ApiResponse<>("success", userService.getUserById(userId));
+        ApiResponse<User> response = new ApiResponse<>(userService.getUserById(userId));
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{userId}")
     public ResponseEntity<ApiResponse<User>> updateUser(@PathVariable String userId, @RequestBody @Valid UserUpdateDto userUpdateDto) {
-        ApiResponse<User> response = new ApiResponse<>("success", userService.updateUser(userId, userUpdateDto));
+        ApiResponse<User> response = new ApiResponse<>(userService.updateUser(userId, userUpdateDto));
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable String userId) {
-        ApiResponse<Void> response = new ApiResponse<>("success", null);
+        ApiResponse<Void> response = new ApiResponse<>("success");
         userService.deleteUser(userId);
         return ResponseEntity.ok(response);
     }

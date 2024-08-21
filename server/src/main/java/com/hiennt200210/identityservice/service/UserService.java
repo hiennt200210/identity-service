@@ -23,6 +23,14 @@ public class UserService {
 
     public User createUser(UserCreateDto userCreateDto) {
 
+        if (userRepository.existsByUsername(userCreateDto.getUsername())) {
+            throw new ApiException(ErrorCode.USERNAME_ALREADY_EXISTS);
+        }
+
+        if (userRepository.existsByEmail(userCreateDto.getEmail())) {
+            throw new ApiException(ErrorCode.EMAIL_ALREADY_IN_USE);
+        }
+
         User user = new User();
         user.setFirstName(userCreateDto.getFirstName());
         user.setLastName(userCreateDto.getLastName());
@@ -32,18 +40,7 @@ public class UserService {
         user.setUsername(userCreateDto.getUsername());
         user.setPassword(userCreateDto.getPassword());
 
-        if (userRepository.existsByUsername(userCreateDto.getUsername())) {
-            throw new ApiException(ErrorCode.USERNAME_ALREADY_EXISTS);
-        }
-
-        if (userRepository.existsByEmail(userCreateDto.getEmail())) {
-//            throw new ApiException(ErrorCode.EMAIL_ALREADY_EXISTS);
-            System.out.println("Email already exists");
-            return user;
-        }
-
-//        return userRepository.save(user);
-        return user;
+        return userRepository.save(user);
     }
 
     public List<User> getAllUsers() {
@@ -64,7 +61,6 @@ public class UserService {
         user.setLastName(userUpdateDto.getLastName());
         user.setGender(userUpdateDto.getGender());
         user.setDateOfBirth(userUpdateDto.getDateOfBirth());
-        user.setEmail(userUpdateDto.getEmail());
         user.setPassword(userUpdateDto.getPassword());
 
         return userRepository.save(user);
