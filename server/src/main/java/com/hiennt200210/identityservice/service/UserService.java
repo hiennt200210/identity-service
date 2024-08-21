@@ -5,21 +5,23 @@ import com.hiennt200210.identityservice.dto.request.UserUpdateDto;
 import com.hiennt200210.identityservice.entity.User;
 import com.hiennt200210.identityservice.enums.ErrorCode;
 import com.hiennt200210.identityservice.exception.ApiException;
+import com.hiennt200210.identityservice.mapper.UserMapper;
 import com.hiennt200210.identityservice.repository.UserRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
-
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    UserRepository userRepository;
+    UserMapper userMapper;
 
     public User createUser(UserCreateDto userCreateDto) {
 
@@ -31,14 +33,7 @@ public class UserService {
             throw new ApiException(ErrorCode.EMAIL_ALREADY_IN_USE);
         }
 
-        User user = new User();
-        user.setFirstName(userCreateDto.getFirstName());
-        user.setLastName(userCreateDto.getLastName());
-        user.setGender(userCreateDto.getGender());
-        user.setDateOfBirth(userCreateDto.getDateOfBirth());
-        user.setEmail(userCreateDto.getEmail());
-        user.setUsername(userCreateDto.getUsername());
-        user.setPassword(userCreateDto.getPassword());
+        User user = userMapper.toUser(userCreateDto);
 
         return userRepository.save(user);
     }
@@ -57,11 +52,7 @@ public class UserService {
         }
 
         User user = getUserById(userId);
-        user.setFirstName(userUpdateDto.getFirstName());
-        user.setLastName(userUpdateDto.getLastName());
-        user.setGender(userUpdateDto.getGender());
-        user.setDateOfBirth(userUpdateDto.getDateOfBirth());
-        user.setPassword(userUpdateDto.getPassword());
+        userMapper.updateUser(user, userUpdateDto);
 
         return userRepository.save(user);
     }

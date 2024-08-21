@@ -2,16 +2,23 @@ package com.hiennt200210.identityservice.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hiennt200210.identityservice.exception.ApiException;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.springframework.validation.FieldError;
 
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
-    private String code;
-    private String message;
-    private String details;
-    private LocalDateTime timestamp;
+    String code;
+    String message;
+    String details;
+    LocalDateTime timestamp;
 
     public ErrorResponse(ApiException apiException) {
         this.code = apiException.getErrorCode().getCode();
@@ -25,37 +32,5 @@ public class ErrorResponse {
         this.message = "Invalid " + fieldError.getField() + " field";
         this.details = fieldError.getDefaultMessage();
         this.timestamp = LocalDateTime.now();
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
     }
 }

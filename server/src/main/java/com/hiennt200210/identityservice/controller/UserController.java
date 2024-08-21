@@ -6,6 +6,9 @@ import com.hiennt200210.identityservice.dto.response.ApiResponse;
 import com.hiennt200210.identityservice.entity.User;
 import com.hiennt200210.identityservice.service.UserService;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,16 +16,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    UserService userService;
 
     @PostMapping
     public ResponseEntity<ApiResponse<User>> createUser(@RequestBody @Valid UserCreateDto userCreateDto) {
