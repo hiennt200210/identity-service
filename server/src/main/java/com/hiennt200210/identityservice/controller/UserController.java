@@ -4,7 +4,6 @@ import com.hiennt200210.identityservice.dto.request.UserCreateRequest;
 import com.hiennt200210.identityservice.dto.request.UserUpdateRequest;
 import com.hiennt200210.identityservice.dto.response.ApiResponse;
 import com.hiennt200210.identityservice.dto.response.UserResponse;
-import com.hiennt200210.identityservice.entity.User;
 import com.hiennt200210.identityservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
