@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
+
     String code;
     String message;
     String details;
@@ -33,4 +34,5 @@ public class ErrorResponse {
         this.details = fieldError.getDefaultMessage();
         this.timestamp = LocalDateTime.now();
     }
+
 }

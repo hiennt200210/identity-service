@@ -15,9 +15,16 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "user")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String userId;
+
+    @Column(name = "username")
+    String username;
+
+    @Column(name = "password")
+    String password;
 
     @Column(name = "first_name")
     String firstName;
@@ -35,9 +42,4 @@ public class User {
     @Column(name = "email")
     String email;
 
-    @Column(name = "username")
-    String username;
-
-    @Column(name = "password")
-    String password;
 }

@@ -12,4 +12,5 @@ import lombok.experimental.FieldDefaults;
 public class ApiException extends RuntimeException {
 
     ErrorCode errorCode;
+
 }

@@ -14,12 +14,13 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
+
     String status;
     T data;
     List<ErrorResponse> errors;
 
-    public ApiResponse(String status) {
-        this.status = status;
+    public ApiResponse() {
+        this.status = "success";
     }
 
     public ApiResponse(T data) {
@@ -31,4 +32,5 @@ public class ApiResponse<T> {
         this.status = "error";
         this.errors = errors;
     }
+
 }

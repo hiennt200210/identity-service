@@ -12,13 +12,20 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserUpdateDto {
+public class UserUpdateRequest {
+
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, max = 255, message = "Password must be between 8 and 255 characters")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+            message = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")
+    String password;
+
     @NotBlank(message = "First name is required")
-    @Size(min = 1, max = 100, message = "First name must be between 1 and 50 characters")
+    @Size(min = 1, max = 100, message = "First name must be between 1 and 100 characters")
     String firstName;
 
     @NotBlank(message = "Last name is required")
-    @Size(min = 1, max = 100, message = "Last name must be between 1 and 50 characters")
+    @Size(min = 1, max = 100, message = "Last name must be between 1 and 100 characters")
     String lastName;
 
     @NotNull(message = "Gender is required")
@@ -28,9 +35,4 @@ public class UserUpdateDto {
     @Past(message = "Date of birth must be a past date")
     LocalDate dateOfBirth;
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 8, max = 255, message = "Password must be between 8 and 255 characters")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-            message = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")
-    String password;
 }

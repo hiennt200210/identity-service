@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
-    public ResponseEntity<ApiResponse<Void>> handleApiException(ApiException exception, WebRequest request) {
+    public ResponseEntity<ApiResponse<Void>> handleApiException(ApiException exception) {
         List<ErrorResponse> errorResponses = new ArrayList<>();
         errorResponses.add(new ErrorResponse(exception));
         ApiResponse<Void> response = new ApiResponse<>(errorResponses);
@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Void>> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception, WebRequest request) {
+    public ResponseEntity<ApiResponse<Void>> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         List<ErrorResponse> errorResponses = exception.getBindingResult().getAllErrors().stream()
                 .map(error -> new ErrorResponse((FieldError) error))
                 .collect(Collectors.toList());
@@ -36,10 +36,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ApiResponse<Void>> handleRuntimeException(RuntimeException exception, WebRequest request) {
+    public ResponseEntity<ApiResponse<Void>> handleRuntimeException(RuntimeException exception) {
         List<ErrorResponse> errorResponses = new ArrayList<>();
         errorResponses.add(new ErrorResponse(new ApiException(ErrorCode.INTERNAL_SERVER_ERROR)));
         ApiResponse<Void> response = new ApiResponse<>(errorResponses);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
+
 }

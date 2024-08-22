@@ -19,4 +19,5 @@ public enum ErrorCode {
     String code;
     String title;
     String detail;
+
 }
