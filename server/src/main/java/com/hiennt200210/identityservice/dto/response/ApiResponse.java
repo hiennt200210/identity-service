@@ -1,7 +1,6 @@
 package com.hiennt200210.identityservice.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.hiennt200210.identityservice.exception.ApiException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
