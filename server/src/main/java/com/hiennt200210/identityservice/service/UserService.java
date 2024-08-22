@@ -11,6 +11,8 @@ import com.hiennt200210.identityservice.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,10 +58,17 @@ public class UserService {
             throw new ApiException(ErrorCode.EMAIL_ALREADY_IN_USE);
         }
 
-        // Save new user to database
-        User user = userRepository.save(userMapper.toUser(userCreateRequest));
+        // Convert UserCreateRequest to User using the mapper
+        User user = userMapper.toUser(userCreateRequest);
 
-        return userMapper.toUserResponse(user);
+        // Hashing user password with BCrypt
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
+
+        // Save new user to database
+        User savedUser = userRepository.save(user);
+
+        return userMapper.toUserResponse(savedUser);
     }
 
     /**
