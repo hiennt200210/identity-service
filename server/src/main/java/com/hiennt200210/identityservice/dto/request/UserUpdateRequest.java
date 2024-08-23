@@ -14,25 +14,25 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserUpdateRequest {
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 8, max = 255, message = "Password must be between 8 and 255 characters")
+    @NotBlank(message = "{password.required}")
+    @Size(min = 8, max = 255, message = "{password.size}")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-             message = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")
+             message = "{password.pattern}")
     String password;
 
-    @NotBlank(message = "First name is required")
-    @Size(min = 1, max = 100, message = "First name must be between 1 and 100 characters")
+    @NotBlank(message = "{firstName.required}")
+    @Size(min = 1, max = 100, message = "{firstName.size}")
     String firstName;
 
-    @NotBlank(message = "Last name is required")
-    @Size(min = 1, max = 100, message = "Last name must be between 1 and 100 characters")
+    @NotBlank(message = "{lastName.required}")
+    @Size(min = 1, max = 100, message = "{lastName.size}")
     String lastName;
 
-    @NotNull(message = "Gender is required")
+    @NotNull(message = "{gender.required}")
     Gender gender;
 
-    @NotNull(message = "Date of birth is required")
-    @Past(message = "Date of birth must be a past date")
+    @NotNull(message = "{dateOfBirth.required}")
+    @Past(message = "{dateOfBirth.past}")
     LocalDate dateOfBirth;
 
 }

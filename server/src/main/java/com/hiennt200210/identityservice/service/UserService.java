@@ -11,7 +11,6 @@ import com.hiennt200210.identityservice.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +24,7 @@ public class UserService {
 
     UserRepository userRepository;
     UserMapper userMapper;
+    PasswordEncoder passwordEncoder;
 
     /**
      * Get all users
@@ -62,7 +62,6 @@ public class UserService {
         User user = userMapper.toUser(userCreateRequest);
 
         // Hashing user password with BCrypt
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
 
         // Save new user to database
@@ -81,6 +80,9 @@ public class UserService {
 
         // Update user with data from request
         User updatedUser = userMapper.updateUser(user, userUpdateRequest);
+
+        // Hashing user password with BCrypt
+        updatedUser.setPassword(passwordEncoder.encode(userUpdateRequest.getPassword()));
 
         // Save updated user to database
         User savedUser = userRepository.save(updatedUser);

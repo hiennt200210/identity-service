@@ -1,6 +1,7 @@
 package com.hiennt200210.identityservice.service;
 
 import com.hiennt200210.identityservice.dto.request.AuthenticationRequest;
+import com.hiennt200210.identityservice.dto.response.AuthenticationResponse;
 import com.hiennt200210.identityservice.entity.User;
 import com.hiennt200210.identityservice.enums.ErrorCode;
 import com.hiennt200210.identityservice.exception.ApiException;
@@ -22,7 +23,7 @@ public class AuthenticationService {
     /**
      * Authenticate a user
      */
-    public boolean authenticate(AuthenticationRequest authenticationRequest) {
+    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
 
         // Check if user does not exist
         String username = authenticationRequest.getUsername();
@@ -30,6 +31,7 @@ public class AuthenticationService {
 
         // Verify if the provided password matches the stored hashed password
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword());
+
+        return new AuthenticationResponse(passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword()));
     }
 }
