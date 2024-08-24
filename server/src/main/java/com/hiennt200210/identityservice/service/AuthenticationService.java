@@ -9,7 +9,6 @@ import com.hiennt200210.identityservice.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     UserRepository userRepository;
+    PasswordEncoder passwordEncoder;
 
     /**
      * Authenticate a user
@@ -29,9 +29,7 @@ public class AuthenticationService {
         String username = authenticationRequest.getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
 
-        // Verify if the provided password matches the stored hashed password
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
+        // Verify if the provided password matches the stored hashed password and return result
         return new AuthenticationResponse(passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword()));
     }
 }
