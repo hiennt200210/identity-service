@@ -36,7 +36,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResponse<Void>> handleRuntimeException(RuntimeException exception) {
+
+        // For testing
         exception.printStackTrace();
+
         List<ErrorResponse> errorResponses = new ArrayList<>();
         errorResponses.add(new ErrorResponse(new ApiException(ErrorCode.INTERNAL_SERVER_ERROR)));
         ApiResponse<Void> response = new ApiResponse<>(errorResponses);

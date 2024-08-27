@@ -1,21 +1,27 @@
 package com.hiennt200210.identityservice.service;
 
 import com.hiennt200210.identityservice.dto.request.AuthenticationRequest;
+import com.hiennt200210.identityservice.dto.request.IntrospectRequest;
 import com.hiennt200210.identityservice.dto.response.AuthenticationResponse;
+import com.hiennt200210.identityservice.dto.response.IntrospectResponse;
 import com.hiennt200210.identityservice.entity.User;
 import com.hiennt200210.identityservice.enums.ErrorCode;
 import com.hiennt200210.identityservice.exception.ApiException;
 import com.hiennt200210.identityservice.repository.UserRepository;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -29,7 +35,8 @@ public class AuthenticationService {
     PasswordEncoder passwordEncoder;
 
     @NonFinal
-    protected static final String SIGNED_KEY = "0mTCQkfBt/q2f77skNYspTm4yqsJCqywiOJro3cMhGy564KUR+ou6tvQdPTGcsYC";
+    @Value("${jwt.signerKey}")
+    protected String SIGNER_KEY;
 
     /**
      * Authenticate a user
@@ -56,8 +63,10 @@ public class AuthenticationService {
      */
     private String generateToken(User user) {
 
+        // Create JWS header
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
+        // Build the JWT claims set
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getUserId())
                 .claim("username", user.getUsername())
@@ -67,19 +76,38 @@ public class AuthenticationService {
                 ))
                 .build();
 
+        // Create JWS payload
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
 
+        // Create JWS object
         JWSObject jwsObject = new JWSObject(header, payload);
 
         try {
             // Apply the HMAC to the JWS object
-            jwsObject.sign(new MACSigner(SIGNED_KEY.getBytes()));
-
-            // Output in URL-safe format
+            jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
             return jwsObject.serialize();
         } catch (JOSEException e) {
             System.out.println("Exception here");
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Verify token
+     */
+    public IntrospectResponse introspect(IntrospectRequest request) {
+
+        String token = request.getToken();
+
+        // Verify token
+        try {
+            JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+            return new IntrospectResponse(signedJWT.verify(verifier) && expiryTime.after(new Date()));
+        } catch (JOSEException | ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

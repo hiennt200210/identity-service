@@ -1,8 +1,10 @@
 package com.hiennt200210.identityservice.controller;
 
 import com.hiennt200210.identityservice.dto.request.AuthenticationRequest;
+import com.hiennt200210.identityservice.dto.request.IntrospectRequest;
 import com.hiennt200210.identityservice.dto.response.ApiResponse;
 import com.hiennt200210.identityservice.dto.response.AuthenticationResponse;
+import com.hiennt200210.identityservice.dto.response.IntrospectResponse;
 import com.hiennt200210.identityservice.service.AuthenticationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -26,4 +28,11 @@ public class AuthenticationController {
         ApiResponse<AuthenticationResponse> response = new ApiResponse<>(authenticationService.authenticate(authenticationRequest));
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/introspect")
+    public ResponseEntity<ApiResponse<IntrospectResponse>> introspect(@RequestBody IntrospectRequest request) {
+        ApiResponse<IntrospectResponse> response = new ApiResponse<>(authenticationService.introspect(request));
+        return ResponseEntity.ok(response);
+    }
+
 }
