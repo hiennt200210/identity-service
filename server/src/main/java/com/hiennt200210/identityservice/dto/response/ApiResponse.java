@@ -1,22 +1,15 @@
 package com.hiennt200210.identityservice.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
-@Getter
-@Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
 
-    String status;
-    T data;
-    List<ErrorResponse> errors;
+    private String status;
+    private T data;
+    private List<ErrorResponse> errors;
 
     public ApiResponse() {
         this.status = "success";
@@ -29,6 +22,30 @@ public class ApiResponse<T> {
 
     public ApiResponse(List<ErrorResponse> errors) {
         this.status = "error";
+        this.errors = errors;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public List<ErrorResponse> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<ErrorResponse> errors) {
         this.errors = errors;
     }
 

@@ -2,46 +2,95 @@ package com.hiennt200210.identityservice.dto.request;
 
 import com.hiennt200210.identityservice.enums.Gender;
 import jakarta.validation.constraints.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserCreateRequest {
 
     @NotBlank(message = "{username.required}")
     @Size(min = 1, max = 50, message = "{username.size}")
     @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "{username.pattern}")
-    String username;
+    private String username;
 
     @NotBlank(message = "{password.required}")
     @Size(min = 8, max = 255, message = "{password.size}")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "{password.pattern}")
-    String password;
+    private String password;
 
     @NotBlank(message = "{firstName.required}")
     @Size(min = 1, max = 100, message = "{firstName.size}")
-    String firstName;
+    private String firstName;
 
     @NotBlank(message = "{lastName.required}")
     @Size(min = 1, max = 100, message = "{lastName.size}")
-    String lastName;
+    private String lastName;
 
     @NotNull(message = "{gender.required}")
-    Gender gender;
+    private Gender gender;
 
     @NotNull(message = "{dateOfBirth.required}")
     @Past(message = "{dateOfBirth.past}")
-    LocalDate dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @NotBlank(message = "{email.required}")
     @Email(message = "{email.invalidFormat}")
     @Size(max = 255, message = "{email.size}")
-    String email;
+    private String email;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
 }

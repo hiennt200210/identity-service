@@ -1,15 +1,19 @@
 package com.hiennt200210.identityservice.dto.response;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
-@Getter
-@Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@NoArgsConstructor
-@AllArgsConstructor
 public class IntrospectResponse {
 
-    boolean valid;
+    private boolean valid;
+
+    public IntrospectResponse(boolean valid) {
+        this.valid = valid;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
 
 }
