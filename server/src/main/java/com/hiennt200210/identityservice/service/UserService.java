@@ -102,7 +102,7 @@ public class UserService {
         User user = findUserById(userId);
 
         // Delete user in database
-        userRepository.deleteById(user.getUserId());
+        userRepository.deleteById(user.getId());
     }
 
     /**
