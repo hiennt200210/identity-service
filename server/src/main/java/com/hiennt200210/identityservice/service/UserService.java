@@ -3,16 +3,20 @@ package com.hiennt200210.identityservice.service;
 import com.hiennt200210.identityservice.dto.request.UserCreateRequest;
 import com.hiennt200210.identityservice.dto.request.UserUpdateRequest;
 import com.hiennt200210.identityservice.dto.response.UserResponse;
+import com.hiennt200210.identityservice.entity.Role;
 import com.hiennt200210.identityservice.entity.User;
 import com.hiennt200210.identityservice.enums.ErrorCode;
 import com.hiennt200210.identityservice.exception.ApiException;
 import com.hiennt200210.identityservice.mapper.UserMapper;
+import com.hiennt200210.identityservice.repository.RoleRepository;
 import com.hiennt200210.identityservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,12 +25,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     /**
@@ -66,6 +72,11 @@ public class UserService {
 
         // Hashing user password with BCrypt
         user.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
+
+        // Set USER role by default for new user
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleRepository.findByName("USER"));
+        user.setRoles(roles);
 
         // Save new user to database
         User savedUser = userRepository.save(user);
