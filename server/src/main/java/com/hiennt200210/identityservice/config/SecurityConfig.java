@@ -36,8 +36,6 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                     .anyRequest().authenticated()
             );
-//            .httpBasic(Customizer.withDefaults())
-//            .formLogin(Customizer.withDefaults());
 
         http.oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()))
@@ -55,5 +53,4 @@ public class SecurityConfig {
                     .macAlgorithm(MacAlgorithm.HS512)
                     .build();
     }
-
 }
